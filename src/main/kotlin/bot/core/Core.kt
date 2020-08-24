@@ -15,6 +15,7 @@ class Core {
     val applications: List<Service> = loadClasses("bot.app", Application::class.java)
 
     init {
+        applications.forEach { it.start(this) }
         println("Successfully loaded ${channels.size} channels, ${connectors.size} connectors, ${applications.size} applications")
     }
 
