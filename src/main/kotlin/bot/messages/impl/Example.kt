@@ -6,7 +6,7 @@ import bot.messages.CommandHandler
 import bot.messages.MessageData
 
 @Message("example")
-class ExampleCommand : CommandHandler {
+class Example : CommandHandler {
 
     override fun handle(message: MessageData, source: GenericChannel) {
         source.send("Hello {user:${message.user.id}}, this is the example command!", message.source)
