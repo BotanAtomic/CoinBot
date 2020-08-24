@@ -1,5 +1,6 @@
 package bot.app
 
+import bot.helper.getChannel
 import net.dv8tion.jda.api.JDA
 import java.util.*
 import java.util.concurrent.Executors
@@ -23,16 +24,19 @@ class JhonApp : Application {
     private val scheduler = Executors.newScheduledThreadPool(1)
 
     override fun start(jda: JDA) {
-        val channel = jda.textChannels.first { it.name == "mutual-bucket" }
-        val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
-        val random = Random()
-        scheduler.scheduleWithFixedDelay({
-            if(random.nextInt(10) == 3) {
-                channel.sendMessage(sentences.split("\n").random() + " <@${ids.random()}>").queue()
-            } else {
-                channel.sendMessage(sentences.split("\n").random()).queue()
-            }
-        }, 5, 5, TimeUnit.MINUTES)
+        jda.getChannel("mutual-bucket").let {
+            val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
+            val random = Random()
+            val message = sentences.split("\n").random()
+            scheduler.scheduleWithFixedDelay({
+                if (random.nextInt(10) == 3) {
+                    it.sendMessage(message + " <@${ids.random()}>").queue()
+                } else {
+                    it.sendMessage(message).queue()
+                }
+            }, 5, 5, TimeUnit.MINUTES)
+        }
+
     }
 
 }
