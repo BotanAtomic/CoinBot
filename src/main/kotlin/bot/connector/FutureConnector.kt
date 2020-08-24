@@ -1,4 +1,4 @@
-package bot.api
+package bot.connector
 
 class FutureConnector {
 
