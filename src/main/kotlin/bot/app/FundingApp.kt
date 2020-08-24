@@ -4,7 +4,7 @@ import bot.api.Application
 import bot.api.Service
 
 
-@Application
+@Application("funding")
 class FundingApp : Service {
 
     override fun start(input: Any?) {
