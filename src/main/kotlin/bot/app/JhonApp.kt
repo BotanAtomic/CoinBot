@@ -43,7 +43,7 @@ class JhonApp : Service {
                 if (random.nextInt() == 3) message += " {user:${ids.random()}}"
 
                 it.send(message, "mutual-bucket")
-            }, 5, 5, TimeUnit.MINUTES)
+            }, 15, 15, TimeUnit.MINUTES)
         }
 
     }
