@@ -1,5 +1,5 @@
 package bot.api
 
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
-annotation class Application
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Application(val name: String)

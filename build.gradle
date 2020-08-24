@@ -23,5 +23,5 @@ dependencies {
     implementation "com.binance.sdk:binance-client:+"
     implementation "com.binance.api:binance-api-client:+"
     implementation group: 'org.ta4j', name: 'ta4j-core', version: '+'
-    implementation group: 'org.reflections', name: 'reflections', version: '+'
+    implementation("com.google.guava:guava:29.0-jre")
 }
