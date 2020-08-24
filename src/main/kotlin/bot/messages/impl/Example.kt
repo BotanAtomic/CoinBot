@@ -5,7 +5,7 @@ import bot.channels.GenericChannel
 import bot.messages.CommandHandler
 import bot.messages.MessageData
 
-@Message("example")
+@Message("example", "an example command")
 class Example : CommandHandler {
 
     override fun handle(message: MessageData, source: GenericChannel) {
