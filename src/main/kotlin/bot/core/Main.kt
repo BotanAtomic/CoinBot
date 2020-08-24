@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag
 
 
 fun main() {
-    JDABuilder.createDefault("NzQ0NjMyNTUyOTkxNzUyMjUz.XzmDGw.6mDwcV0Rp4ojXTC3uUWf4qBlV1c").apply {
+    JDABuilder.createDefault(System.getenv("coin_bot_token")).apply {
         disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
         setBulkDeleteSplittingEnabled(false)
         setCompression(Compression.NONE)
