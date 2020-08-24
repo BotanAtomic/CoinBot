@@ -27,7 +27,7 @@ class DiscordChannel : GenericChannel {
     }
 
     override fun send(message: String, channel: String) {
-        jda.getTextChannel(channel).apply {
+        jda.getTextChannel(channel)?.apply {
             sendTyping()
             sendMessage(message).queue()
         }
