@@ -8,18 +8,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 class DefaultEventListener(private val applications: List<Application>) : ListenerAdapter() {
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
-        if (event.message.contentDisplay.startsWith("B ".toLowerCase())) {
-            event.channel.sendTyping()
-            event.channel.sendMessage(
-                "<@${event.author.idLong}> a dit ${
-                    event.message.contentDisplay.removePrefix(
-                        "B"
-                    )
-                }"
-            ).queue()
+        if (event.message.contentDisplay.toLowerCase().startsWith("B ".toLowerCase())) {
+            //TODO: handle message
         }
     }
-
 
     override fun onReady(event: ReadyEvent) {
         applications.forEach { it.start(event.jda) }
