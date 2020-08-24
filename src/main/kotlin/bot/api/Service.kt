@@ -1,8 +1,10 @@
 package bot.api
 
+import bot.core.Core
+
 interface Service {
 
-    fun start(input: Any?)
+    fun start(core: Core)
 
     fun stop()
 }
