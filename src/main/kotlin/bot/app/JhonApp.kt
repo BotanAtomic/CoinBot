@@ -2,7 +2,7 @@ package bot.app
 
 import bot.api.Application
 import bot.api.Service
-import bot.helper.getChannel
+import bot.helper.getTextChannel
 import net.dv8tion.jda.api.JDA
 import java.util.*
 import java.util.concurrent.Executors
@@ -30,7 +30,7 @@ class JhonApp : Service {
     private lateinit var future: ScheduledFuture<*>
 
     override fun start(input: Any?) {
-        (input as JDA).getChannel("mutual-bucket").let {
+        (input as JDA).getTextChannel("mutual-bucket").let {
             val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
             val random = Random()
             val message = SENTENCES.split("\n").random()
