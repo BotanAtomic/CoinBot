@@ -40,7 +40,7 @@ class JhonApp : Service {
             future = scheduler.scheduleWithFixedDelay({
                 var message = jhonSentences.split("\n").random()
 
-                if (random.nextInt() == 3) message += " <@${ids.random()}>"
+                if (random.nextInt() == 3) message += " {user:${ids.random()}}"
 
                 it.send(message, "mutual-bucket")
             }, 5, 5, TimeUnit.MINUTES)

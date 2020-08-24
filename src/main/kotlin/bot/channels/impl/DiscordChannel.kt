@@ -4,6 +4,7 @@ import bot.api.Channel
 import bot.channels.GenericChannel
 import bot.core.Core
 import bot.helper.getTextChannel
+import bot.helper.toUser
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -13,7 +14,7 @@ import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 
 @Channel("Discord")
-class DiscordChannel(val core: Core) : GenericChannel, ListenerAdapter() {
+class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter() {
 
     private val jda: JDA
 
@@ -28,15 +29,36 @@ class DiscordChannel(val core: Core) : GenericChannel, ListenerAdapter() {
         }
     }
 
+    private fun preProcess(message: String): String {
+        var newMessage = message
+        val pattern = "\\{user:\\d+}".toRegex()
+        val matcher = pattern.findAll(message)
+
+        matcher.forEach {
+            val id = it.value.substringAfter("{user:").removeSuffix("}")
+            newMessage = pattern.replaceFirst(newMessage, "<@${id}>")
+        }
+
+        return newMessage
+    }
+
     override fun send(message: String, channel: String) {
         jda.getTextChannel(channel)?.apply {
             sendTyping()
-            sendMessage(message).queue()
+            sendMessage(preProcess(message)).queue()
         }
     }
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
-        println(event.message.contentRaw)
+        val rawMessage = event.message.contentStripped.toLowerCase()
+        if (rawMessage.startsWith("b ")) {
+            core.onReceiveCommand(
+                rawMessage.substringAfter("b "),
+                event.author.toUser(),
+                event.channel.idLong.toString(),
+                this
+            )
+        }
     }
 
 }
