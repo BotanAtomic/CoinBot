@@ -4,6 +4,7 @@ import bot.api.*
 import bot.channels.GenericChannel
 import bot.connectors.GenericConnector
 import bot.entity.User
+import bot.helper.fullTrim
 import bot.helper.loadClasses
 import bot.messages.CommandHandler
 import bot.messages.MessageData
@@ -14,7 +15,7 @@ class Core {
     private val connectors = loadClasses<GenericConnector>("bot.connectors.impl", Connector::class)
     private val applications = loadClasses<Service>("bot.app", Application::class)
     private val messages = loadClasses<CommandHandler>("bot.messages.impl", Message::class).associateBy {
-        it::class.java.getAnnotationsByType(Message::class.java).first().header
+        it::class.java.getAnnotation(Message::class.java).value
     }.toMap()
 
     init {
@@ -26,7 +27,7 @@ class Core {
     }
 
     fun onReceiveCommand(message: String, user: User, source: String, channel: GenericChannel) {
-        val command = message.split(" ").map { it.trim() }
+        val command = message.fullTrim().split(" ").map { it.fullTrim() }
         val header = command[0].toLowerCase()
 
         if (messages.containsKey(header)) {
@@ -36,7 +37,7 @@ class Core {
             )
         } else {
             channel.send(
-                "Sorry {user:${user.id}}, '${command[0]}' is not a CoinBot command. See 'B --help'.",
+                "Sorry {user:${user.id}}, '${header}' is not a CoinBot command. See 'B --help'.",
                 source
             )
         }
