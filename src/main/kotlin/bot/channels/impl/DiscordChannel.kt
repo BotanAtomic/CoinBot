@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 
-@Channel
+@Channel("Discord")
 class DiscordChannel : GenericChannel {
 
     private val jda: JDA
@@ -32,5 +32,6 @@ class DiscordChannel : GenericChannel {
             sendMessage(message).queue()
         }
     }
+
 
 }
