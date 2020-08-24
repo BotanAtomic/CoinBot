@@ -1,11 +1,17 @@
 package bot.app
 
-import net.dv8tion.jda.api.JDA
+import bot.api.Application
+import bot.api.Service
 
-class FundingApp : Application {
 
-    override fun start(jda: JDA) {
+@Application
+class FundingApp : Service {
 
+    override fun start(input: Any?) {
     }
+
+    override fun stop() {
+    }
+
 
 }

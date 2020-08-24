@@ -1,12 +1,15 @@
 package bot.app
 
+import bot.api.Application
+import bot.api.Service
 import bot.helper.getChannel
 import net.dv8tion.jda.api.JDA
 import java.util.*
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-const val sentences = "This is it! \n" +
+const val SENTENCES = "This is it! \n" +
         "Oh my god macdee is crossing!\n" +
         "I just received a mail from my source in China!\n" +
         "HOLD YOU FUCKING PUSSY!\n" +
@@ -19,16 +22,19 @@ const val sentences = "This is it! \n" +
         "BUY THE FUCKING DIP !\n" +
         "DON'T PANIC !"
 
-class JhonApp : Application {
+@Application
+class JhonApp : Service {
 
     private val scheduler = Executors.newScheduledThreadPool(1)
 
-    override fun start(jda: JDA) {
-        jda.getChannel("mutual-bucket").let {
+    private lateinit var future: ScheduledFuture<*>
+
+    override fun start(input: Any?) {
+        (input as JDA).getChannel("mutual-bucket").let {
             val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
             val random = Random()
-            val message = sentences.split("\n").random()
-            scheduler.scheduleWithFixedDelay({
+            val message = SENTENCES.split("\n").random()
+            future = scheduler.scheduleWithFixedDelay({
                 if (random.nextInt(10) == 3) {
                     it.sendMessage(message + " <@${ids.random()}>").queue()
                 } else {
@@ -37,6 +43,11 @@ class JhonApp : Application {
             }, 5, 5, TimeUnit.MINUTES)
         }
 
+    }
+
+    override fun stop() {
+        future.cancel(true)
+        scheduler.shutdownNow()
     }
 
 }
