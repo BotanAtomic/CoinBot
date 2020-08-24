@@ -1,3 +1,5 @@
 package bot.messages
 
-class MessageData(val header: String, val params: Array<String>)
+import bot.entity.User
+
+data class MessageData(val header: String, val params: List<String>, val user: User, val channel: String)
