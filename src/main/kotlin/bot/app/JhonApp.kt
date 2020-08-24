@@ -2,9 +2,9 @@ package bot.app
 
 import bot.api.Application
 import bot.api.Service
-import bot.helper.getTextChannel
-import net.dv8tion.jda.api.JDA
-import java.util.Random
+import bot.channels.impl.DiscordChannel
+import bot.core.Core
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -31,17 +31,18 @@ class JhonApp : Service {
 
     private lateinit var future: ScheduledFuture<*>
 
-    override fun start(input: Any?) {
-        (input as JDA).getTextChannel("mutual-bucket").let {
+    override fun start(core: Core) {
+        core.channels.filterIsInstance<DiscordChannel>().first().let {
             val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
             val random = Random()
-            val message = jhonSentences.split("\n").random()
+
+
             future = scheduler.scheduleWithFixedDelay({
-                if (random.nextInt(10) == 3) {
-                    it.sendMessage(message + " <@${ids.random()}>").queue()
-                } else {
-                    it.sendMessage(message).queue()
-                }
+                var message = jhonSentences.split("\n").random()
+
+                if (random.nextInt() == 3) message += " <@${ids.random()}>"
+
+                it.send(message, "mutual-bucket")
             }, 5, 5, TimeUnit.MINUTES)
         }
 
