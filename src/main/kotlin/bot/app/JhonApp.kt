@@ -2,7 +2,6 @@ package bot.app
 
 import bot.api.Application
 import bot.api.Service
-import bot.channels.impl.DiscordChannel
 import bot.core.Core
 import java.util.*
 import java.util.concurrent.Executors
@@ -32,7 +31,7 @@ class JhonApp : Service {
     private lateinit var future: ScheduledFuture<*>
 
     override fun start(core: Core) {
-        core.channels.filterIsInstance<DiscordChannel>().first().let {
+        core.channels.forEach {
             val ids = listOf("391236348683485185", "389794413196476441") //koplosex & methyr42
             val random = Random()
 

@@ -5,7 +5,6 @@ import bot.channels.GenericChannel
 import bot.helper.getClasses
 import bot.messages.CommandHandler
 import bot.messages.MessageData
-import java.lang.StringBuilder
 
 @Message("--help", "list all available commands")
 class Help : CommandHandler {
