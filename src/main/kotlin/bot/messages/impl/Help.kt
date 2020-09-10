@@ -18,7 +18,9 @@ class Help : CommandHandler {
         val maxCommandLength = commands.keys.maxByOrNull { it.length }.orEmpty().length + 2
 
         commands.forEach {
-            builder.append(it.key.padEnd(maxCommandLength)).append(": ").append(it.value).append("\n")
+            val description = it.value.javaClass.getAnnotation(Message::class.java).description
+            builder.append(it.key.padEnd(maxCommandLength)).append(": ")
+            .append(description).append("\n")
         }
 
         builder.append("```")
