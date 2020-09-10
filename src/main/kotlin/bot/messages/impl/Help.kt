@@ -16,7 +16,7 @@ class Help : CommandHandler {
     override fun handle(message: MessageData, source: GenericChannel) {
         val builder = StringBuilder("```JavaScript\n")
 
-        builder.append("CoinBot command usage: B <command> [<args>]\n\n")
+        builder.append("CoinBot command usage: J <command> [<args>]\n\n")
 
         val maxCommandLength = commands.keys.maxByOrNull { it.length }.orEmpty().length + 2
 

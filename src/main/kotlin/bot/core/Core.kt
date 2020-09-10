@@ -37,7 +37,7 @@ class Core {
             )
         } else {
             channel.send(
-                "Sorry {user:${user.id}}, '${header}' is not a CoinBot command. See 'B --help'.",
+                "Sorry {user:${user.id}}, '${header}' is not a CoinBot command. See 'J --help'.",
                 source
             )
         }
