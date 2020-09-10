@@ -2,6 +2,7 @@ package bot.messages.impl
 
 import bot.api.Message
 import bot.channels.GenericChannel
+import bot.core.Core
 import bot.helper.getClasses
 import bot.messages.CommandHandler
 import bot.messages.MessageData
@@ -13,7 +14,7 @@ class Help : CommandHandler {
         it.getAnnotation(Message::class.java)
     }.associateBy({ it.value }, { it.description })
 
-    override fun handle(message: MessageData, source: GenericChannel) {
+    override fun handle(message: MessageData, source: GenericChannel, core: Core) {
         val builder = StringBuilder("```JavaScript\n")
 
         builder.append("CoinBot command usage: J <command> [<args>]\n\n")
