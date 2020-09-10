@@ -51,6 +51,7 @@ class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter()
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         val rawMessage = event.message.contentStripped.toLowerCase()
+
         if (rawMessage.startsWith("b ")) {
             core.onReceiveCommand(
                 rawMessage.substringAfter("b "),

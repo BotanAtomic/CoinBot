@@ -12,7 +12,9 @@ import bot.messages.MessageData
 class Core {
 
     val channels = loadClasses<GenericChannel>("bot.channels.impl", Channel::class, this)
-    private val connectors = loadClasses<GenericConnector>("bot.connectors.impl", Connector::class)
+    private val connectors = loadClasses<GenericConnector>("bot.connectors.impl", Connector::class).associateBy {
+        it::class.java.getAnnotation(Connector::class.java).name
+    }.toMap()
     private val applications = loadClasses<Service>("bot.app", Application::class)
     private val messages = loadClasses<CommandHandler>("bot.messages.impl", Message::class).associateBy {
         it::class.java.getAnnotation(Message::class.java).value
@@ -26,6 +28,8 @@ class Core {
         )
     }
 
+    fun getConnector(name: String) = connectors[name]
+
     fun onReceiveCommand(message: String, user: User, source: String, channel: GenericChannel) {
         val command = message.fullTrim().split(" ").map { it.fullTrim() }
         val header = command[0].toLowerCase()
@@ -33,7 +37,8 @@ class Core {
         if (messages.containsKey(header)) {
             messages[header]?.handle(
                 MessageData(header, command.filterIndexed { i, _ -> i > 0 }, user, source),
-                channel
+                channel,
+                this
             )
         } else {
             channel.send(
