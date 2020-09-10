@@ -12,11 +12,13 @@ import bot.messages.MessageData
 class Core {
 
     val channels = loadClasses<GenericChannel>("bot.channels.impl", Channel::class, this)
-    private val connectors = loadClasses<GenericConnector>("bot.connectors.impl", Connector::class).associateBy {
+    private val connectors: Map<String, GenericConnector> =
+        loadClasses<GenericConnector>("bot.connectors.impl", Connector::class).associateBy {
         it::class.java.getAnnotation(Connector::class.java).name
     }.toMap()
-    private val applications = loadClasses<Service>("bot.app", Application::class)
-    private val messages = loadClasses<CommandHandler>("bot.messages.impl", Message::class).associateBy {
+    private val applications: List<Service> = loadClasses<Service>("bot.app", Application::class)
+    private val commands: Map<String, CommandHandler> =
+        loadClasses<CommandHandler>("bot.messages.impl", Message::class).associateBy {
         it::class.java.getAnnotation(Message::class.java).value
     }.toMap()
 
@@ -24,18 +26,20 @@ class Core {
         applications.forEach { it.start(this) }
         println(
             "Successfully loaded ${channels.size} channels, ${connectors.size} connectors," +
-                    " ${applications.size} applications, ${messages.size} messages"
+                    " ${applications.size} applications, ${commands.size} messages"
         )
     }
 
-    fun getConnector(name: String) = connectors[name]
+    fun getConnector(name: String): GenericConnector = connectors.getValue(name)
+
+    fun getCommands(): Map<String, CommandHandler> = commands
 
     fun onReceiveCommand(message: String, user: User, source: String, channel: GenericChannel) {
         val command = message.fullTrim().split(" ").map { it.fullTrim() }
         val header = command[0].toLowerCase()
 
-        if (messages.containsKey(header)) {
-            messages[header]?.handle(
+        if (commands.containsKey(header)) {
+            commands[header]?.handle(
                 MessageData(header, command.filterIndexed { i, _ -> i > 0 }, user, source),
                 channel,
                 this
