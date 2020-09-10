@@ -16,7 +16,7 @@ class Core {
         loadClasses<GenericConnector>("bot.connectors.impl", Connector::class).associateBy {
         it::class.java.getAnnotation(Connector::class.java).name
     }.toMap()
-    private val applications: List<Service> = loadClasses<Service>("bot.app", Application::class)
+    private val applications: List<Service> = loadClasses("bot.app", Application::class)
     private val commands: Map<String, CommandHandler> =
         loadClasses<CommandHandler>("bot.messages.impl", Message::class).associateBy {
         it::class.java.getAnnotation(Message::class.java).value
