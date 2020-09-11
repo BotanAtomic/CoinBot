@@ -12,8 +12,8 @@ import bot.messages.MessageData
 class PriceCheck: CommandHandler {
 
     override fun handle(message: MessageData, source: GenericChannel, core: Core) {
-        if(message.params.firstOrNull().isNullOrEmpty()) {
-            source.send("J --help", message.source)
+        if(message.params.isEmpty()) {
+            Help().handle(message, source, core)
             return
         }
 
