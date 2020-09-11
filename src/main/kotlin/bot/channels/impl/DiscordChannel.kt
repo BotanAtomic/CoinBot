@@ -5,6 +5,7 @@ import bot.channels.GenericChannel
 import bot.core.Core
 import bot.helper.getTextChannel
 import bot.helper.toUser
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -12,8 +13,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
+import java.awt.Color
+import java.util.*
 
-@Channel("Discord")
+@Channel("Discord", true)
 class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter() {
 
     private val jda: JDA
@@ -49,6 +52,13 @@ class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter()
         }
     }
 
+    override fun send(embedBuilder: EmbedBuilder, channel: String) {
+        jda.getTextChannel(channel)?.apply {
+            sendTyping()
+            sendMessage(embedBuilder.build()).queue()
+        }
+    }
+
     override fun onMessageReceived(event: MessageReceivedEvent) {
         val rawMessage = event.message.contentStripped.toLowerCase()
         if (rawMessage.startsWith("j ")) {
@@ -58,6 +68,15 @@ class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter()
                 event.channel.idLong.toString(),
                 this
             )
+
+            if(this.javaClass.getAnnotation(Channel::class.java).debug && !event.author.isBot) {
+                val eb = EmbedBuilder()
+                eb.setTitle(event.author.name)
+                eb.setDescription(event.message.contentStripped.toLowerCase())
+                eb.setTimestamp(event.message.timeCreated)
+                eb.setColor(Color.ORANGE)
+                send(eb, "john-debug")
+            }
         }
     }
 
