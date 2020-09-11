@@ -14,6 +14,7 @@ const val USDT = "USDT"
 
 class Core {
 
+    val tempDataBase: MutableMap<String, Any> = mutableMapOf("debug" to true)
     val channels = loadClasses<GenericChannel>("bot.channels.impl", Channel::class, this)
     private val connectors: Map<String, GenericConnector> =
         loadClasses<GenericConnector>("bot.connectors.impl", Connector::class).associateBy {

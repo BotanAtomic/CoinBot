@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.awt.Color
 
-@Channel("Discord", true)
+@Channel("Discord")
 class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter() {
 
     private val jda: JDA
@@ -68,7 +68,7 @@ class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter()
                 this
             )
 
-            if(this.javaClass.getAnnotation(Channel::class.java).debug && !event.author.isBot) {
+            if(core.tempDataBase["debug"] as Boolean && !event.author.isBot) {
                 val eb = EmbedBuilder()
                 eb.setTitle(event.author.name)
                 eb.setDescription(event.message.contentStripped.toLowerCase())
