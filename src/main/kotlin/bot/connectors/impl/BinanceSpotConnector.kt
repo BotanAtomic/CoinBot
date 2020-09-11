@@ -2,6 +2,8 @@ package bot.connectors.impl
 
 import bot.api.Connector
 import bot.connectors.GenericConnector
+import bot.core.BTC
+import bot.core.USDT
 import bot.helper.trimTrailingZero
 import com.binance.api.client.BinanceApiClientFactory
 import com.binance.api.client.BinanceApiRestClient
@@ -19,15 +21,15 @@ class BinanceSpotConnector: GenericConnector {
         val stringBuilder = StringBuilder()
 
         runCatching {
-            client.get24HrPriceStatistics("${coin}USDT").lastPrice
+            client.get24HrPriceStatistics(coin+USDT).lastPrice
         }.onSuccess {
             stringBuilder.append("$coin = ${it.trimTrailingZero()} $")
         }
         runCatching {
-            client.get24HrPriceStatistics(coin+"BTC").lastPrice
+            client.get24HrPriceStatistics(coin+BTC).lastPrice
         }.onSuccess {
             if(stringBuilder.isNotEmpty()) { stringBuilder.append(" / ") }
-            stringBuilder.append("${it.trimTrailingZero()} BTC")
+            stringBuilder.append("${it.trimTrailingZero()} $BTC")
         }
 
         if(stringBuilder.isEmpty()) {

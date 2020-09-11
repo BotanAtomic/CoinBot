@@ -9,6 +9,9 @@ import bot.helper.loadClasses
 import bot.messages.CommandHandler
 import bot.messages.MessageData
 
+const val BTC = "BTC"
+const val USDT = "USDT"
+
 class Core {
 
     val channels = loadClasses<GenericChannel>("bot.channels.impl", Channel::class, this)
