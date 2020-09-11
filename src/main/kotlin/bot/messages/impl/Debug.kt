@@ -19,7 +19,9 @@ class Debug: CommandHandler {
                 core.tempDataBase["debug"] = false
                 source.send("Debug Mode deactivated", message.source)
             }
-            "status" -> { source.send("Debug is ${toDisplay(core.tempDataBase["debug"] as Boolean)}", message.source) }
+            "status" -> {
+                source.send("Debug is ${toDisplay(core.tempDataBase["debug"] as Boolean)}", message.source)
+            }
             else -> { Help().handle(message, source, core) }
         }
     }
