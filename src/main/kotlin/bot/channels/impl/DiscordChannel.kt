@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.awt.Color
-import java.util.*
 
 @Channel("Discord", true)
 class DiscordChannel(private val core: Core) : GenericChannel, ListenerAdapter() {
